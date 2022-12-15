@@ -27,3 +27,5 @@ const SlotMachine = ({ numSlots, slotValues, spinTime }) => {
     </div>
   );
 };
+
+export default SlotMachine
