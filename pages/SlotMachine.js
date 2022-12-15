@@ -2,7 +2,10 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 
 const SlotMachine = ({ numSlots, slotValues, spinTime }) => {
-  const [slots, setSlots] = useState(Array(numSlots).fill(slotValues[0]));
+  const [slots, setSlots] = useState(
+    numSlots > 0 && slotValues ? Array(numSlots).fill(slotValues[0]) : []
+  );
+
 
   const spin = () => {
     const newSlots = [];
