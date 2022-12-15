@@ -22,11 +22,17 @@ const SlotMachine = ({ numSlots, slotValues, spinTime }) => {
   }, [spinTime]);
 
   return (
-    <div>
-      {slots.map((slot, index) => (
-        <div key={index}>{slot}</div>
-      ))}
-      <button onClick={spin}>Spin!</button>
+    <div className="SlotMachine">
+      <div className="SlotMachine-slots">
+        {slots.map((slot, index) => (
+          <div key={index} className="SlotMachine-slot">
+            {slot}
+          </div>
+        ))}
+      </div>
+      <button className="SlotMachine-button" onClick={spin}>
+        Spin!
+      </button>
     </div>
   );
 };
