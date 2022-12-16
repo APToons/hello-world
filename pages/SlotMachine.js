@@ -22,17 +22,28 @@ const SlotMachine = ({ numSlots, slotValues, spinTime }) => {
   }, [spinTime]);
 
   return (
-    <div className="SlotMachine">
-      <div className="SlotMachine-slots">
-        {slots.map((slot, index) => (
-          <div key={index} className="SlotMachine-slot">
-            {slot}
+    <div>
+      <div class="container d-flex justify-content-center align-items-center">
+        <div class="row">
+          <div className="col-12 mt-auto mb-5 ">
+            
+            <div className="SlotMachine-slots mb-5">
+              {slots.map((slot, index) => (
+                <div key={index} className="SlotMachine-slot"> {slot} </div>
+              ))}
+            </div>
           </div>
-        ))}
+        </div>
       </div>
-      <button className="SlotMachine-button" onClick={spin}>
-        Spin!
-      </button>
+
+      <div class="container d-flex justify-content-center align-items-center">
+        <div class="row">
+          <div className="col-12 mt-auto mb-5 ">
+            <button class="glow-on-hover" type="button" onClick={spin}> Spin! </button>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 };
