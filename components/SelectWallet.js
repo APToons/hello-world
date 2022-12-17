@@ -2,6 +2,7 @@ import { Modal } from "react-bootstrap"
 import { useWallet } from '@manahippo/aptos-wallet-adapter';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+
 export default function SelectWallet({ show, setShow }) {
 
     const [isOptionsMore, setIsOptionMore] = useState(false);

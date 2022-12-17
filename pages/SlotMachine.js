@@ -1,7 +1,35 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 
+import { useWallet } from '@manahippo/aptos-wallet-adapter';
+import { toast } from 'react-toastify';
+
+const aptos = require("aptos");
+
+const NODE_URL =  "https://fullnode.devnet.aptoslabs.com";
+const FAUCET_URL =  "https://faucet.devnet.aptoslabs.com";
+
+const aptosCoin = "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>";
+
+
 const SlotMachine = ({ numSlots, slotValues, spinTime }) => {
+
+  const {
+    account
+  } = useWallet();
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  const init = async () => {
+    try {
+
+    } catch (error) {
+        toast.error("Please refresh your page");
+    }
+  }
+  
   const [slots, setSlots] = useState(
     numSlots > 0 && slotValues ? Array(numSlots).fill(slotValues[0]) : []
   );
@@ -13,6 +41,7 @@ const SlotMachine = ({ numSlots, slotValues, spinTime }) => {
       const randomIndex = Math.floor(Math.random() * slotValues.length);
       newSlots.push(slotValues[randomIndex]);
     }
+    
     setSlots(newSlots);
   };
 
