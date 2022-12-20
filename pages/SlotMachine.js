@@ -1,22 +1,15 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-
-import { useWallet } from '@manahippo/aptos-wallet-adapter';
 import { toast } from 'react-toastify';
+import { Modal } from "react-bootstrap";
 
-const aptos = require("aptos");
-
-const NODE_URL =  "https://fullnode.devnet.aptoslabs.com";
-const FAUCET_URL =  "https://faucet.devnet.aptoslabs.com";
-
-const aptosCoin = "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>";
 
 
 const SlotMachine = ({ numSlots, slotValues, spinTime }) => {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
 
-  const {
-    account
-  } = useWallet();
+  
 
   useEffect(() => {
     init();
@@ -30,25 +23,94 @@ const SlotMachine = ({ numSlots, slotValues, spinTime }) => {
     }
   }
   
-  const [slots, setSlots] = useState(
-    numSlots > 0 && slotValues ? Array(numSlots).fill(slotValues[0]) : []
-  );
-
+  const symbols = ['🍒', '🍋', '🍎', '🍌', '🍉', '💣'];
+  const [reel1, setReel1] = useState('');
+  const [reel2, setReel2] = useState('');
+  const [reel3, setReel3] = useState('');
+  const [result, setResult] = useState('');
+  const [isSpinning, setIsSpinning] = useState(false);
+  let winnings_amt = 0;
 
   const spin = () => {
-    const newSlots = [];
-    for (let i = 0; i < numSlots; i++) {
-      const randomIndex = Math.floor(Math.random() * slotValues.length);
-      newSlots.push(slotValues[randomIndex]);
+
+    if (isSpinning) {
+      return;
     }
-    
-    setSlots(newSlots);
+
+    setIsSpinning(true);
+
+    setTimeout(() => {
+      setIsSpinning(false);
+    }, 1000);
+
+    let combination = [
+      getRandomSymbol(),
+      getRandomSymbol(),
+      getRandomSymbol()
+    ];
+
+    setReel1(combination[0]);
+    setReel2(combination[1]);
+    setReel3(combination[2]);
+
+    setShow(true);
+
+    winnings_amt = checkWinnings(combination);
+    if (winnings_amt > 0) {
+      setResult('You won $' + winnings_amt + '!');
+    } else {
+      setResult('Sorry, you lost.');
+    }
   };
 
   useEffect(() => {
     const timeout = setTimeout(spin, spinTime);
     return () => clearTimeout(timeout);
   }, [spinTime]);
+
+  function reset() {
+    setResult('');
+    setReel1('');
+    setReel2('');
+    setReel3('');
+  }
+  function getRandomSymbol() {
+    return symbols[Math.floor(Math.random() * symbols.length)];
+  }
+  function checkWinnings(combination) {
+    let cherryCount = 0;
+    let lemonCount = 0;
+    let appleCount = 0;
+    let bannanaCount = 0;
+    let melonCount = 0;
+    let bombCount = 0;
+
+    for (let i = 0; i < combination.length; i++) {
+      if (combination[i] === '🍒') {
+        cherryCount++;
+      } else if (combination[i] === '🍋') {
+        lemonCount++;
+      } else if (combination[i] === '🍎') {
+        appleCount++;
+      } else if (combination[i] === '🍌') {
+        bannanaCount++;
+      } else if (combination[i] === '🍉') {
+        melonCount++;
+      } else if (combination[i] === '💣') {
+        bombCount++;
+      }
+    }
+
+    if (cherryCount === 3 || lemonCount === 3 || appleCount === 3 ||
+      bannanaCount === 3 || melonCount === 3 || bombCount === 3 ) {
+      return 50;
+    } else if (lemonCount === 2 || appleCount === 2 || cherryCount === 2 ||
+      bannanaCount === 2 || melonCount === 2 || bombCount === 2) {
+      return 20;
+    } else {
+      return 0;
+    }
+  }
 
   return (
     <div>
@@ -57,22 +119,45 @@ const SlotMachine = ({ numSlots, slotValues, spinTime }) => {
           <div className="col-12 mt-auto mb-5 ">
             
             <div className="SlotMachine-slots mb-5">
-              {slots.map((slot, index) => (
-                <div key={index} className="SlotMachine-slot"> {slot} </div>
-              ))}
+              <div id="reel1" className="SlotMachine-slot">{reel1}</div>
+              <div id="reel2" className="SlotMachine-slot">{reel2}</div>
+              <div id="reel3" className="SlotMachine-slot">{reel3}</div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="container d-flex justify-content-center align-items-center">
-        <div class="row">
-          <div className="col-12 mt-auto mb-5 ">
+      <div class=" d-flex  justify-content-center align-items-center">
+        <div class="row" style={{marginRight: "10px"}}>
+          <div className="justify-content-center  ">
             <button class="glow-on-hover" type="button" onClick={spin}> Spin! </button>
+          </div>
+          </div>
+        <div class="row"  style={{marginLeft: "10px"}}>
+          <div className=" ">
+            <button class="glow-on-hover" type="button" onClick={reset}> Reset </button>
           </div>
         </div>
       </div>
 
+      <div>
+            <Modal left show={show} onHide={handleClose}>
+                <Modal.Body style={{ background: "#3E4551"}}>
+                    <div>
+                        <div className="container text-center">
+                            <h4 className="mt-4 fw-bold" style={{ color: "#ffffff"}}>Thanks for playing.</h4>
+                        </div>
+                        <div className="container mt-4 text-center">
+                            {
+                                <div>
+                                    <p className="mt-4 fw-bold" style={{ color: "#ffffff"}}>{result}</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
+        </div>
     </div>
   );
 };
