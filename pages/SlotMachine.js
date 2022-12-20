@@ -5,12 +5,11 @@ import { Modal } from "react-bootstrap";
 
 
 
+
 const SlotMachine = ({ numSlots, slotValues, spinTime }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-
   
-
   useEffect(() => {
     init();
   }, []);
@@ -24,9 +23,9 @@ const SlotMachine = ({ numSlots, slotValues, spinTime }) => {
   }
   
   const symbols = ['🍒', '🍋', '🍎', '🍌', '🍉', '💣'];
-  const [reel1, setReel1] = useState('');
-  const [reel2, setReel2] = useState('');
-  const [reel3, setReel3] = useState('');
+  const [reel1, setReel1] = useState('🍒');
+  const [reel2, setReel2] = useState('🍒');
+  const [reel3, setReel3] = useState('🍒');
   const [result, setResult] = useState('');
   const [isSpinning, setIsSpinning] = useState(false);
   let winnings_amt = 0;
@@ -63,16 +62,11 @@ const SlotMachine = ({ numSlots, slotValues, spinTime }) => {
     }
   };
 
-  useEffect(() => {
-    const timeout = setTimeout(spin, spinTime);
-    return () => clearTimeout(timeout);
-  }, [spinTime]);
-
   function reset() {
     setResult('');
-    setReel1('');
-    setReel2('');
-    setReel3('');
+    setReel1('🍒');
+    setReel2('🍒');
+    setReel3('🍒');
   }
   function getRandomSymbol() {
     return symbols[Math.floor(Math.random() * symbols.length)];
