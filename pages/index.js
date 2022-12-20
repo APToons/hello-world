@@ -1,13 +1,11 @@
-import SlotMachine from './SlotMachine';
-import styles from '../styles/Home.module.css'
 import SelectWallet from '../components/SelectWallet';
 import { useEffect, useState } from 'react';
 import { useWallet } from '@manahippo/aptos-wallet-adapter';
 import { ToastContainer, toast } from "react-toastify";
-import axios from 'axios';
+import { Modal } from "react-bootstrap";
 
+const axios = require('axios').default;
 const aptos = require("aptos");
-
 const getNode = (network) => {
     switch (network) {
         case "devnet":
@@ -17,17 +15,18 @@ const getNode = (network) => {
         case "mainnet":
             return "https://fullnode.mainnet.aptoslabs.com/v1"
         default:
-            return "https://fullnode.testnet.aptoslabs.com/v1"
+            return "https://fullnode.devnet.aptoslabs.com/v1"
     }
 }
 
 const aptos_client = new aptos.AptosClient(getNode());
 const OCTAS = 100000000;
 
+let lose_counter = 0;
+let win_counter = 0;
 
 const getBalance = async (address) => {
   try {
-      //let resp = await axios.get(`${NODE_URL}/accounts/${address}/resource/0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>`);
       let resp = await aptos_client.getAccountResource(address, '0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>')
       return Number(resp.data.coin.value / OCTAS);
   } catch (error) {
@@ -37,15 +36,17 @@ const getBalance = async (address) => {
 
 export default function Home() {
   const [show, setShow] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [balance, setBalance] = useState(0);
 
+  // Connection to aptos-wallet-adapter 
   const {
-    disconnect,
     account,
+    connect,
     connected,
     wallet
   } = useWallet();
-
+  
   useEffect(() => {
     init();
   }, [connected]);
@@ -72,6 +73,119 @@ export default function Home() {
       }
     )
   }
+
+  const handleClose = () => setShowModal(false);
+
+  const symbols = ['🍒', '🍋', '🍎', '🍌', '🍉', '💣'];
+
+  const [reel1, setReel1] = useState('🍒');
+  const [reel2, setReel2] = useState('🍒');
+  const [reel3, setReel3] = useState('🍒');
+
+  const [result, setResult] = useState('');
+  const [winCounter, setWinCounter] = useState('');
+  const [loseCounter,  setLoseCounter] = useState('');
+ 
+  const [isSpinning, setIsSpinning] = useState(false);
+
+  let winnings_amt = 0;
+
+  const spin = () => {
+
+    if (isSpinning) {
+      return;
+    }
+
+    setIsSpinning(true);
+
+    setTimeout(() => {
+      setIsSpinning(false);
+    }, 1000);
+
+    let combination = [
+      getRandomSymbol(),
+      getRandomSymbol(),
+      getRandomSymbol()
+    ];
+
+    setReel1(combination[0]);
+    setReel2(combination[1]);
+    setReel3(combination[2]);
+
+    setShowModal(true);
+
+    winnings_amt = checkWinnings(combination);
+    if (winnings_amt > 0) {
+      setResult('You won devnet $APT!');
+      win_counter++;
+
+      const res = axios({
+        method: 'POST',
+        baseURL: 'https://faucet.devnet.aptoslabs.com',
+        url: '/mint',
+        params: {
+          amount: winnings_amt * OCTAS,
+          address: account.address,
+        },
+      });
+  
+    } else {
+      setResult('Sorry, you lost.');
+      lose_counter++;
+      
+    }
+
+    setWinCounter(win_counter);
+    setLoseCounter(lose_counter);
+  };
+
+
+  function reset() {
+    setResult('');
+    setReel1('🍒');
+    setReel2('🍒');
+    setReel3('🍒');
+  }
+
+  function getRandomSymbol() {
+    return symbols[Math.floor(Math.random() * symbols.length)];
+  }
+
+  function checkWinnings(combination) {
+    let cherryCount = 0;
+    let lemonCount = 0;
+    let appleCount = 0;
+    let bannanaCount = 0;
+    let melonCount = 0;
+    let bombCount = 0;
+
+    for (let i = 0; i < combination.length; i++) {
+      if (combination[i] === '🍒') {
+        cherryCount++;
+      } else if (combination[i] === '🍋') {
+        lemonCount++;
+      } else if (combination[i] === '🍎') {
+        appleCount++;
+      } else if (combination[i] === '🍌') {
+        bannanaCount++;
+      } else if (combination[i] === '🍉') {
+        melonCount++;
+      } else if (combination[i] === '💣') {
+        bombCount++;
+      }
+    }
+
+    if (cherryCount === 3 || lemonCount === 3 || appleCount === 3 ||
+      bannanaCount === 3 || melonCount === 3 || bombCount === 3 ) {
+      return 50;
+    } else if (lemonCount === 2 || appleCount === 2 || cherryCount === 2 ||
+      bannanaCount === 2 || melonCount === 2 || bombCount === 2) {
+      return 20;
+    } else {
+      return 0;
+    }
+  }
+
   return (
     <div >
       
@@ -125,11 +239,93 @@ export default function Home() {
             
                 
     <div class="hero-section">
-      <SlotMachine
-        numSlots={3}
-        slotValues={['🍒', '🍊', '🍋', '🍉', '🍇']}
-        spinTime={1000}
-      />
+      
+    <div>
+      <div class="container d-flex justify-content-center align-items-center">
+        <div class="row">
+          <div className="col-12 mt-auto mb-5 ">
+            
+            <div className="SlotMachine-slots mb-5" id="sm">
+              <div id="reel1" className="slot" >{reel1}</div>
+              <div id="reel2" className="slot" >{reel2}</div>
+              <div id="reel3" className="slot" >{reel3}</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div>
+        {
+          connected ?
+          <div class="d-flex justify-content-center align-items-center">
+
+            <div class="row" style={{marginRight: "10px"}}>
+              <div className="justify-content-center  ">
+                <button id="spin-button" class="glow-on-hover" type="button" onClick={spin}> Spin! </button>
+              </div>
+            </div>
+
+            <div class="row" style={{marginRight: "10px"}}>
+              <div className="justify-content-center  ">
+                <button class="glow-on-hover" type="button" onClick={reset}> Reset </button>
+              </div>
+            </div>
+
+          </div>
+        :
+        <div class="d-flex justify-content-center align-items-center">
+
+          <div class="row" style={{marginRight: "10px"}}>
+            <div className="justify-content-center  ">
+              <button id="spin-button" class="glow-on-hover" type="button" onClick={spin}> DEMO Spin! </button>
+            </div>
+          </div>
+
+          <div class="row" style={{marginRight: "10px"}}>
+            <div className="justify-content-center  ">
+              <button class="glow-on-hover" type="button" onClick={reset}> Reset </button>
+            </div>
+          </div>
+
+        </div>
+        }
+
+
+        <div>
+          <Modal left show={showModal} onHide={handleClose} style={{marginTop: "100px"}}>
+            <Modal.Body style={{ background: "#3E4551"}}>
+              <div>
+                <div className="container text-center">
+                  <h4 className="mt-4 fw-bold" style={{ color: "#ffffff"}}>Thanks for playing.</h4>
+                </div>
+
+                <div className="container mt-4 text-center">
+                {
+                  <div>
+                    <p className="mt-4 fw-bold" style={{ color: "#ffffff"}}>{result}</p><br></br>
+                    <h5 className="mt-4 fw-bold" style={{ color: "#ffffff"}}>SESSION STATS</h5>
+                    <table className="container mt-4 text-center" style={{ }}>
+                      <tr>
+                        <th>Wins</th>
+                        <th>Losses</th>
+                      </tr>
+                      <tr>
+                        <td>{winCounter}</td>
+                        <td>{loseCounter}</td>
+                      </tr>
+                    </table>
+                  </div>
+                }
+
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+      </div>
+    </div>
+  </div>
+
     </div>
 
     <SelectWallet show={show} setShow={setShow} />
