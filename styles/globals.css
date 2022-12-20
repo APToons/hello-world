@@ -15,10 +15,11 @@
   width: 300px;
 }
 
-.SlotMachine-slot {
+.slot {
   font-size: 36px;
   margin: 0 10px;
 }
+
 
 .SlotMachine-button {
   padding: 10px 20px;
@@ -124,6 +125,51 @@
   50% { background-position: 400% 0; }
   100% { background-position: 0 0; }
 }
+
+
+table {
+  width: 400px;
+	border-collapse: collapse;
+	overflow: hidden;
+	box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+th, td {
+	padding: 15px;
+	background-color: rgba(255,255,255,0.2);
+	color: #fff;
+}
+
+th {
+	text-align: left;
+}
+
+thead, th {
+		background-color: #55608f;
+	}
+
+tr:hover {
+  background-color: rgba(255,255,255,0.3);
+}
+
+tbody, td {
+		position: relative;
+}
+
+tbody, td:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -9999px;
+    bottom: -9999px;
+    background-color: rgba(255,255,255,0.2);
+    z-index: -1;
+  }
+
+
+
+
 
 
 /*
