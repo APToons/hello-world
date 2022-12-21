@@ -58,12 +58,16 @@ export default function Home() {
 
   const init = async () => {
     try {
-      let balance = await getBalance(account.address);
-      setBalance(balance);
-
-
+      if (connected)
+      {
+        let balance = await getBalance(account.address);
+        setBalance(balance);
+      }
     } catch (error) {
-      toast.error("Please refresh your page");
+      toast.error("Please refresh your page", {
+        position: toast.POSITION.BOTTOM_LEFT,
+        autoClose: 5000
+      });
       console.log("error");
     }
   }
@@ -76,7 +80,8 @@ export default function Home() {
         success: 'Wallet Disconected!',
         error: 'User Rejected'
       }
-    )
+    , { position: toast.POSITION.BOTTOM_LEFT,
+      autoClose: 5000 });
   }
 
   const handleClose = () => setShowModal(false);
@@ -136,8 +141,11 @@ export default function Home() {
             },
           });
           balanceRefesh();
+          toast.success("Won", {
+            position: toast.POSITION.BOTTOM_LEFT,
+            autoClose: 2000
+          });
         } catch (error) {
-          toast.error("Please refresh your page");
           console.log("error");
         }
       }
@@ -145,7 +153,10 @@ export default function Home() {
     } else {
       setResult('Sorry, you lost.');
       lose_counter++;
-      
+      toast.error("Lost", {
+        position: toast.POSITION.BOTTOM_LEFT,
+        autoClose: 2000
+      });
     }
 
     setWinCounter(win_counter);
@@ -202,11 +213,16 @@ export default function Home() {
   return (
     <div >
       
-      <nav class="navbar navbar-expand-lg">
+      <nav class="navbar navbar-expand-lg" >
                 <div class="container">
-                    <a class="navbar-brand" href="index.html">
-                        APToons
-                    </a>
+                    <div >
+                          <ul class="navbar-nav align-items-lg-center ms-auto me-lg-5">
+                            
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="#"><b>AptosReels</b></a>
+                            </li>
+                          </ul>
+                    </div>
 
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -219,7 +235,7 @@ export default function Home() {
                           <ul class="navbar-nav align-items-lg-center ms-auto me-lg-5">
                             
                             <li class="nav-item">
-                                <a class="nav-link click-scroll" href="#">Aptos Reels</a>
+                                <a class="nav-link click-scroll" href="http://aptoons.vercel.app/">APToons</a>
                             </li>
                             
                             <li class="nav-item">
@@ -236,7 +252,7 @@ export default function Home() {
                           <ul class="navbar-nav align-items-lg-center ms-auto me-lg-5">
                             
                             <li class="nav-item">
-                                <a class="nav-link click-scroll" href="#">Aptos Reels</a>
+                                <a class="nav-link click-scroll" href="http://aptoons.vercel.app/">APToons</a>
                             </li>
 
                             
@@ -340,7 +356,7 @@ export default function Home() {
   </div>
 
     </div>
-
+    <ToastContainer />
     <SelectWallet show={show} setShow={setShow} />
     </div>
   )
