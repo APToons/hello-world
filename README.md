@@ -3,7 +3,7 @@
 
 - [x] Wallet Connections
 - [x] Devnet Payout
-- [x] Balance (Need to reload to refresh balance)
+- [x] Balance
 - [x] Reset Reels
 - [ ] Request Transaction
 
