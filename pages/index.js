@@ -118,16 +118,17 @@ export default function Home() {
     if (winnings_amt > 0) {
       setResult('You won devnet $APT!');
       win_counter++;
-
-      const res = axios({
-        method: 'POST',
-        baseURL: 'https://faucet.devnet.aptoslabs.com',
-        url: '/mint',
-        params: {
-          amount: winnings_amt * OCTAS,
-          address: account.address,
-        },
-      });
+      if (connected) {
+        const res = axios({
+          method: 'POST',
+          baseURL: 'https://faucet.devnet.aptoslabs.com',
+          url: '/mint',
+          params: {
+            amount: winnings_amt * OCTAS,
+            address: account.address,
+          },
+        });
+      }
   
     } else {
       setResult('Sorry, you lost.');
