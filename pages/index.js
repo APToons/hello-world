@@ -46,6 +46,11 @@ export default function Home() {
     connected,
     wallet
   } = useWallet();
+
+  const balanceRefesh = async () => {
+    let balance = await getBalance(account.address);
+    setBalance(balance);
+  }
   
   useEffect(() => {
     init();
@@ -118,18 +123,25 @@ export default function Home() {
     if (winnings_amt > 0) {
       setResult('You won devnet $APT!');
       win_counter++;
+
       if (connected) {
-        const res = axios({
-          method: 'POST',
-          baseURL: 'https://faucet.devnet.aptoslabs.com',
-          url: '/mint',
-          params: {
-            amount: winnings_amt * OCTAS,
-            address: account.address,
-          },
-        });
+        try {
+          const res = axios({
+            method: 'POST',
+            baseURL: 'https://faucet.devnet.aptoslabs.com',
+            url: '/mint',
+            params: {
+              amount: winnings_amt * OCTAS,
+              address: account.address,
+            },
+          });
+          balanceRefesh();
+        } catch (error) {
+          toast.error("Please refresh your page");
+          console.log("error");
+        }
       }
-  
+
     } else {
       setResult('Sorry, you lost.');
       lose_counter++;
@@ -215,7 +227,7 @@ export default function Home() {
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="#"> Balance: {balance}</a>
+                                <a id="bal" class="nav-link" href="#"> Balance: {balance}</a>
                             </li>
                           </ul>
                           
