@@ -9,7 +9,8 @@ export default function SelectWallet({ show, setShow }) {
     const handleClose = () => setShow(false);
     const {
         wallets,
-        connect
+        connect,
+        connected
     } = useWallet();
 
     useEffect(() => {
@@ -25,7 +26,7 @@ export default function SelectWallet({ show, setShow }) {
                     success: 'Wallet Connected!',
                     error: 'User Rejected'
                 }
-            )
+            , { position: toast.POSITION.BOTTOM_LEFT });
             setIsOptionMore(false);
             setShow(false);
         } else {
@@ -43,6 +44,11 @@ export default function SelectWallet({ show, setShow }) {
             }
             return 0;
         })
+    }
+    
+    if (connected)
+    {
+        handleClose();
     }
 
     return (
