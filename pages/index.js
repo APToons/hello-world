@@ -1,8 +1,10 @@
 import SelectWallet from '../components/SelectWallet';
 import { useEffect, useState } from 'react';
-import { useWallet } from '@manahippo/aptos-wallet-adapter';
+import { useWallet  } from '@manahippo/aptos-wallet-adapter';
 import { ToastContainer, toast } from "react-toastify";
 import { Modal } from "react-bootstrap";
+
+//import { useTokens } from '../hooks/useTokens';
 
 const axios = require('axios').default;
 const aptos = require("aptos");
@@ -18,7 +20,6 @@ const getNode = (network) => {
             return "https://fullnode.devnet.aptoslabs.com/v1"
     }
 }
-
 const aptos_client = new aptos.AptosClient(getNode());
 const OCTAS = 100000000;
 
@@ -38,6 +39,8 @@ export default function Home() {
   const [show, setShow] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [balance, setBalance] = useState(0);
+  const [tokens, setTokens] = useState(0);
+  
 
   // Connection to aptos-wallet-adapter 
   const {
@@ -47,22 +50,23 @@ export default function Home() {
     wallet
   } = useWallet();
 
-  const balanceRefesh = async () => {
-    let balance = await getBalance(account.address);
-    setBalance(balance);
-  }
-  
   useEffect(() => {
     init();
   }, [connected]);
 
+  const balanceRefesh = async () => {
+    let balance = await getBalance(account.address);
+    setBalance(balance);
+  }
+
   const init = async () => {
     try {
-      if (connected)
+      if (connected && account)
       {
         let balance = await getBalance(account.address);
         setBalance(balance);
       }
+    
     } catch (error) {
       toast.error("Please refresh your page", {
         position: toast.POSITION.BOTTOM_LEFT,
@@ -100,7 +104,7 @@ export default function Home() {
 
   let winnings_amt = 0;
 
-  const spin = () => {
+  const spin = async () => {
 
     if (isSpinning) {
       return;
@@ -211,70 +215,142 @@ export default function Home() {
   }
 
   return (
-    <div >
-      
-      <nav class="navbar navbar-expand-lg" >
-                <div class="container">
-                    <div >
-                          <ul class="navbar-nav align-items-lg-center ms-auto me-lg-5">
-                            
-                            <li class="nav-item">
-                                <a class="nav-link click-scroll" href="#"><b>AptosReels</b></a>
-                            </li>
-                          </ul>
-                    </div>
+    <div>
+      <nav className='main-menu'>
+        <div class="center" style={{marginTop: "200px", left: "50%"}}>
+            <h1 style={{fontSize: "12px"}}><a href="https://aptoons.vercel.app/">
+              <span>APToonsDAO</span>
+              <span>APToonsDAO</span>
+              <span>APToonsDAO</span> </a>
+            </h1>
+        </div>
 
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-    
-                    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul>
+          <img src="https://aptosfoundation.org/assets/logomark/PNG/Aptos_mark_WHT-1eeb072e4547ee306fa6898165772fcfaff9d561.png" class="aptosimg"></img>
+          
+          <li class="menu-title" style={{marginTop: "120px"}}>
+            <p> APToonsDAO</p>
+          </li>
+          <li>
+            <a href="https://hello-world-aptoons.vercel.app/">
+              <span class="nav-text">
+                About
+              </span>
+            </a>
+          </li>
+                        <li class="active">
+                            <a href="https://hello-world-aptoons.vercel.app/">
+                                <span class="nav-text">
+                                    AptosReels
+                                </span>
+                            </a>
+                        </li>
                         {
                           connected ?
-
-                          <ul class="navbar-nav align-items-lg-center ms-auto me-lg-5">
-                            
-                            <li class="nav-item">
-                                <a class="nav-link click-scroll" href="http://aptoons.vercel.app/">APToons</a>
-                            </li>
-                            
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"> | </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a id="bal" class="nav-link" href="#"> Balance: {balance}</a>
-                            </li>
-                          </ul>
-                          
+                          <li class="">
+                              <a>
+                                  <span class="nav-text">
+                                      Balance: {balance}
+                                  </span>
+                              </a>
+                          </li>
                           :
-                        
-                          <ul class="navbar-nav align-items-lg-center ms-auto me-lg-5">
-                            
-                            <li class="nav-item">
-                                <a class="nav-link click-scroll" href="http://aptoons.vercel.app/">APToons</a>
-                            </li>
-
-                            
-                            <button class="glow-on-hover-2" type="button" onClick={() => { setShow(true) }}>
-                              <span  class="">Connect</span>
-                            </button>
-                          </ul>
-
+                          <li class="active">
+                              <a onClick={() => { setShow(true) }}>
+                                  <span class="nav-text">
+                                      Connect Wallet
+                                  </span>
+                              </a>
+                          </li>
+                          
                         }
-                    </div>
-                </div>
-            </nav>
+                        <li class="">
+                            <a href="https://aptoons.vercel.app/">
+                                <span class="nav-text"> 
+                                </span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="https://aptoons.vercel.app/">
+                                <span class="nav-text">
+                                    APToons NFT
+                                </span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="https://aptoons.vercel.app/sneakpeek.html">
+                                <span class="nav-text">
+                                    Sneak Peek
+                                </span>
+                            </a>
+                        </li>
+                        <li class="menu-title"style={{marginTop: "20px"}}>
+                            <p href="#">
+                              Aptos
+                            </p>
+                        </li>
+                        <li class="has-subnav">
+                            <a href="#">
+                                <span class="nav-text">
+                                    Discover DeFi
+                                </span>
+                            </a>
+                        </li>
+                        <li class="has-subnav">
+                            <a href="#">
+                                <span class="nav-text">
+                                    Discover NFTs
+                                </span>
+                            </a>
+                        </li>
+                        <li class="has-subnav">
+                            <a href="#">
+                                <span class="nav-text">
+                                    Discover Tokens
+                                </span>
+                            </a>
+                        </li>
+                        <li class="menu-title" style={{marginTop: "20px"}}>
+                            <p href="#">
+                              Join Us!
+                            </p>
+                        </li>
+                        <li>
+                            <a href=" ">
+                                <span class="nav-text">
+                                    Discord
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="nav-text">
+                                    Twitter
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                  
+      </nav>
             
                 
-    <div class="hero-section">
+    <div class="hero-section" style={{ height: "1262px"}}>
       
     <div>
       <div class="container d-flex justify-content-center align-items-center">
-        <div class="row">
-          <div className="col-12 mt-auto mb-5 ">
+        <div class="row" style={{ marginTop: "100px", paddingRight: "50px"}}>
+                        <div class="col-12 mt-auto mb-5 text-center">
+                            <small>APToons DAO Presents</small>
+
+                            <h1 class="text-white mb-5">AptosReels</h1>
+
+                            <small>One of, if not, the first Slot Machine built for Aptos.</small><br></br>
+                            <small><i>Currently live on DEVNET</i></small><br></br>
+
+                        </div>
+          <div >
             
-            <div className="SlotMachine-slots mb-5" id="sm">
+            <div style={{marginLeft: "300px"}} className="SlotMachine-slots justify-content-center align-items-center" id="sm">
               <div id="reel1" className="slot" >{reel1}</div>
               <div id="reel2" className="slot" >{reel2}</div>
               <div id="reel3" className="slot" >{reel3}</div>
@@ -287,7 +363,7 @@ export default function Home() {
       <div>
         {
           connected ?
-          <div class="d-flex justify-content-center align-items-center">
+          <div class="d-flex justify-content-center align-items-center" style={{ paddingRight: "50px"}}>
 
             <div class="row" style={{marginRight: "10px"}}>
               <div className="justify-content-center  ">
@@ -301,6 +377,8 @@ export default function Home() {
               </div>
             </div>
 
+            <div className="d-flex justify-content-center align-items-center">
+        </div>
           </div>
         :
         <div class="d-flex justify-content-center align-items-center">
