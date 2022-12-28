@@ -232,206 +232,173 @@ export default function Home() {
             <p> APToonsDAO</p>
           </li>
           <li>
-            <a href="https://hello-world-aptoons.vercel.app/">
+            <a href="https://aptoons.vercel.app/about.html">
               <span class="nav-text">
                 About
               </span>
             </a>
           </li>
-                        <li class="active">
-                            <a href="https://hello-world-aptoons.vercel.app/">
-                                <span class="nav-text">
-                                    AptosReels
-                                </span>
-                            </a>
-                        </li>
-                        {
-                          connected ?
-                          <li class="">
-                              <a>
-                                  <span class="nav-text">
-                                      Balance: {balance}
-                                  </span>
-                              </a>
-                          </li>
-                          :
-                          <li class="active">
-                              <a onClick={() => { setShow(true) }}>
-                                  <span class="nav-text">
-                                      Connect Wallet
-                                  </span>
-                              </a>
-                          </li>
-                          
-                        }
-                        <li class="">
-                            <a href="https://aptoons.vercel.app/">
-                                <span class="nav-text"> 
-                                </span>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="https://aptoons.vercel.app/">
-                                <span class="nav-text">
-                                    APToons NFT
-                                </span>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="https://aptoons.vercel.app/sneakpeek.html">
-                                <span class="nav-text">
-                                    Sneak Peek
-                                </span>
-                            </a>
-                        </li>
-                        <li class="menu-title"style={{marginTop: "20px"}}>
-                            <p href="#">
-                              Aptos
-                            </p>
-                        </li>
-                        <li class="has-subnav">
-                            <a href="#">
-                                <span class="nav-text">
-                                    Discover DeFi
-                                </span>
-                            </a>
-                        </li>
-                        <li class="has-subnav">
-                            <a href="#">
-                                <span class="nav-text">
-                                    Discover NFTs
-                                </span>
-                            </a>
-                        </li>
-                        <li class="has-subnav">
-                            <a href="#">
-                                <span class="nav-text">
-                                    Discover Tokens
-                                </span>
-                            </a>
-                        </li>
-                        <li class="menu-title" style={{marginTop: "20px"}}>
-                            <p href="#">
-                              Join Us!
-                            </p>
-                        </li>
-                        <li>
-                            <a href=" ">
-                                <span class="nav-text">
-                                    Discord
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="nav-text">
-                                    Twitter
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                  
+          <li class="active">
+            <a href="https://hello-world-aptoons.vercel.app/">
+              <span class="nav-text">
+                AptosReels
+              </span>
+            </a>
+          </li>
+          {
+            connected ?
+            <li class="">
+              <a>
+                <span class="nav-text">
+                  Balance: {balance}
+                </span>
+              </a>
+            </li>
+            :
+            <li class="active">
+              <a onClick={() => { setShow(true) }}>
+                <span class="nav-text">
+                  Connect Wallet
+                </span>
+              </a>
+            </li>
+          }
+          <li class="">
+            <a >
+              <span class="nav-text">
+              </span>
+            </a>
+          </li>
+          <li class="">
+            <a href="https://aptoons.vercel.app/">
+              <span class="nav-text">
+                APToons NFT
+              </span>
+            </a>
+          </li>
+          <li class="">
+            <a href="https://aptoons.vercel.app/sneakpeek.html">
+              <span class="nav-text">
+                Sneak Peek
+              </span>
+            </a>
+          </li>
+          <li class="has-subnav">
+            <a href="https://aptoons.vercel.app/discover.html">
+              <span class="nav-text">
+                Discover Aptos
+              </span>
+            </a>
+          </li>
+          <li class="menu-title" style={{marginTop: "20px"}}>
+            <p href="#">
+              Join Us!
+            </p>
+          </li>
+          <li>
+            <a href="https://discord.gg/e4CKWu3pmX">
+              <span class="nav-text">
+                Discord
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="https://twitter.com/APToons_">
+              <span class="nav-text">
+                Twitter
+              </span>
+            </a>
+          </li>
+        </ul>
       </nav>
             
                 
     <div class="hero-section" style={{ height: "1262px"}}>
-      
-    <div>
-      <div class="container d-flex justify-content-center align-items-center">
-        <div class="row" style={{ marginTop: "100px", paddingRight: "50px"}}>
-                        <div class="col-12 mt-auto mb-5 text-center">
-                            <small>APToons DAO Presents</small>
+      <div>
+        <div class="container d-flex justify-content-center align-items-center">
+          <div class="row" style={{ marginTop: "100px", paddingRight: "50px"}}>
+            <div class="col-12 mt-auto mb-5 text-center">
+              <small>APToons DAO Presents</small>
+              <h1 class="text-white mb-5">AptosReels</h1>
+              <small>One of, if not, the first Slot Machine built for Aptos.</small><br></br>
+              <small><i>Currently live on DEVNET</i></small>
 
-                            <h1 class="text-white mb-5">AptosReels</h1>
+              <div style={{marginLeft: "50px"}}>
+                <div  className="SlotMachine-slots" id="sm">
+                    <div id="reel1" className="slot" >{reel1}</div>
+                    <div id="reel2" className="slot" >{reel2}</div>
+                    <div id="reel3" className="slot" >{reel3}</div>
+                </div>
+              </div>
 
-                            <small>One of, if not, the first Slot Machine built for Aptos.</small><br></br>
-                            <small><i>Currently live on DEVNET</i></small><br></br>
-
-                        </div>
-          <div >
-            
-            <div style={{marginLeft: "300px"}} className="SlotMachine-slots justify-content-center align-items-center" id="sm">
-              <div id="reel1" className="slot" >{reel1}</div>
-              <div id="reel2" className="slot" >{reel2}</div>
-              <div id="reel3" className="slot" >{reel3}</div>
             </div>
-
-          </div>
         </div>
       </div>
 
       <div>
         {
           connected ?
-          <div class="d-flex justify-content-center align-items-center" style={{ paddingRight: "50px"}}>
-
+          <div class="d-flex justify-content-center align-items-center">
+            
             <div class="row" style={{marginRight: "10px"}}>
               <div className="justify-content-center  ">
-                <button id="spin-button" class="glow-on-hover" type="button" onClick={spin}> Spin! </button>
+                <button style={{ width: "150px"}} id="spin-button" class="glow-on-hover" type="button" onClick={spin}> Spin! </button>
               </div>
             </div>
 
             <div class="row" style={{marginRight: "10px"}}>
               <div className="justify-content-center  ">
-                <button class="glow-on-hover" type="button" onClick={reset}> Reset </button>
+                <button style={{ width: "150px"}} class="glow-on-hover" type="button" onClick={reset}> Reset </button>
               </div>
             </div>
-
-            <div className="d-flex justify-content-center align-items-center">
-        </div>
           </div>
         :
         <div class="d-flex justify-content-center align-items-center">
 
           <div class="row" style={{marginRight: "10px"}}>
             <div className="justify-content-center  ">
-              <button id="spin-button" class="glow-on-hover" type="button" onClick={spin}> DEMO Spin! </button>
+              <button style={{ width: "150px"}} id="spin-button" class="glow-on-hover" type="button" onClick={spin}> DEMO Spin! </button>
             </div>
           </div>
 
           <div class="row" style={{marginRight: "10px"}}>
             <div className="justify-content-center  ">
-              <button class="glow-on-hover" type="button" onClick={reset}> Reset </button>
+              <button style={{ width: "150px"}} class="glow-on-hover" type="button" onClick={reset}> Reset </button>
             </div>
           </div>
-
         </div>
-        }
-
-
-        <div>
-          <Modal left show={showModal} onHide={handleClose} style={{marginTop: "100px"}}>
-            <Modal.Body style={{ background: "#3E4551"}}>
-              <div>
-                <div className="container text-center">
-                  <h4 className="mt-4 fw-bold" style={{ color: "#ffffff"}}>Thanks for playing.</h4>
-                </div>
-
-                <div className="container mt-4 text-center">
-                {
-                  <div>
-                    <p className="mt-4 fw-bold" style={{ color: "#ffffff"}}>{result}</p><br></br>
-                    <h5 className="mt-4 fw-bold" style={{ color: "#ffffff"}}>SESSION STATS</h5>
-                    <table className="container mt-4 text-center" style={{ }}>
-                      <tr>
-                        <th>Wins</th>
-                        <th>Losses</th>
-                      </tr>
-                      <tr>
-                        <td>{winCounter}</td>
-                        <td>{loseCounter}</td>
-                      </tr>
-                    </table>
-                  </div>
-                }
-
-              </div>
-            </div>
-          </Modal.Body>
-        </Modal>
+      }
       </div>
     </div>
-  </div>
+    
+    <Modal left show={showModal} onHide={handleClose} style={{marginTop: "100px"}}>
+      <Modal.Body style={{ background: "#3E4551"}}>
+        <div>
+          <div className="container text-center">
+            <h4 className="mt-4 fw-bold" style={{ color: "#ffffff"}}>Thanks for playing.</h4>
+          </div>
+          
+          <div className="container mt-4 text-center">
+            {
+              <div>
+                <p className="mt-4 fw-bold" style={{ color: "#ffffff"}}>{result}</p><br></br>
+                <h5 className="mt-4 fw-bold" style={{ color: "#ffffff"}}>SESSION STATS</h5>
+                <table className="container mt-4 text-center" style={{ }}>
+                  <tr>
+                    <th>Wins</th>
+                    <th>Losses</th>
+                  </tr>
+                  <tr>
+                    <td>{winCounter}</td>
+                    <td>{loseCounter}</td>
+                  </tr>
+                </table>
+              </div>
+            }
+          </div>
+        </div>
+      </Modal.Body>
+    </Modal>
 
     </div>
     <ToastContainer />
